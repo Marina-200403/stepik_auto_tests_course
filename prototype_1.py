@@ -1,4 +1,39 @@
-from menu import start_menu as prot_menu
+def is_int(s):
+    try:
+        if type(s) is int:
+            return True
+        if s is None:
+            return False
+        if not s.isdecimal():
+            return False
+        int(s)
+        return True
+    except (Exception, ValueError, TypeError):
+        return False
+
+
+def valid_value(message_input: str, message_err: str, template: list):
+    while True:
+        ch = input(message_input, )
+        if is_int(ch):
+            ch = int(ch)
+            if ch in template:
+                return ch
+        print(message_err)
+
+
+def start_menu(message_input: str, message_err: str, template: dict):
+    while True:
+        ch = valid_value(message_input,
+                         message_err,
+                         list(template))
+        f, is_break = template[ch]
+        f()
+        if is_break:
+            break
+    return False
+
+
 
 def make_mat():
     pass
@@ -17,7 +52,7 @@ def menu_main():
         1: (make_mat, False),
         2: (sum_mat, False),
         3: (mat_output, False)}
-    prot_menu(caption_start, caption_err, menu_template)
+    start_menu(caption_start, caption_err, menu_template)
     
 if __name__ == "__main__":
     menu_main()
