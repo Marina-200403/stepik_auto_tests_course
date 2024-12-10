@@ -1,3 +1,7 @@
+from random import randint
+import numpy as np
+
+
 def is_int(s):
     try:
         if type(s) is int:
@@ -21,28 +25,28 @@ def valid_value(message_input: str, message_err: str, template: list):
                 return ch
         print(message_err)
 
-
-def start_menu(message_input: str, message_err: str, template: dict):
-    while True:
-        ch = valid_value(message_input,
-                         message_err,
-                         list(template))
-        f, is_break = template[ch]
-        f()
-        if is_break:
-            break
-    return False
-
-
+def valid_comand(ch, flag):
+    return True
 
 def make_mat():
-    pass
+    size = int(input("Введите размер матрицы "))
+    mat_1 = mat_input(size)
+    mat_2 = mat_input(size)
+    return (mat_1, mat_2, size)
 
-def sum_mat():
-    pass
+def sum_mat(mat_1, mat_2, size):
+    mat_rezult = [ [0]*size for i in range(size)]
+    mat_rezult = np.add(np.array(mat_1), np.array(mat_2))
+    det = np.linalg.det(np.array(mat_rezult))
+    return (mat_rezult, det)
 
-def mat_output():
-    pass
+def mat_input(size):
+    mat = [ [0]*size for i in range(size)] 
+    return mat
+
+def mat_output(mat_1, mat_2, mat_rezult, det):
+    print (mat_1, '\n', mat_2)
+    print(mat_rezult, '\n', det)
 
 def menu_main():
     caption_start = "МЕНЮ\n1. Создать матрицы\n2. Выполнить алгоритм\n3. Вывести результат \n0. Выход\n"
@@ -52,7 +56,23 @@ def menu_main():
         1: (make_mat, False),
         2: (sum_mat, False),
         3: (mat_output, False)}
-    start_menu(caption_start, caption_err, menu_template)
+    flag = 1
+    while True:
+        ch = valid_value(caption_start,
+                         caption_err,
+                         list(menu_template))
+        f, is_break = menu_template[ch]
+        if ch == 1:
+            mat_1, mat_2, size = f()
+            flag = 2
+        if ch == 2 and valid_comand(ch, flag):
+            mat_rezult, det = f(mat_1, mat_2, size)
+            flag = 3 
+        if ch == 3 and valid_comand(ch, flag):
+            f(mat_1, mat_2, mat_rezult, det)
+        if is_break:
+            break
+    return False
     
 if __name__ == "__main__":
     menu_main()
